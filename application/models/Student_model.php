@@ -1,9 +1,8 @@
 <?php
 
-class student_model extends CI_Model{
+class Student_model extends CI_Model{
     public function addStudent($data){
         $this->db->insert('t_student', $data);
-        return $this->db->affected_rows();
     }
     public function getStudent($id_room = null, $id_period = null){
           $null = NULL;

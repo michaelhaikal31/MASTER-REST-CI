@@ -10,7 +10,7 @@ header("Access-Control-Allow-Origin: *");
 // header("Content-Type: application/json; charset=UTF-8");
 // header("Access-Control-Allow-Methods: POST, OPTIONS");
 
-class student extends REST_Controller{
+class Student extends REST_Controller{
     function __construct(){
         parent::__construct();
         $this->load->model('student_model', 'mStudent');
@@ -20,19 +20,21 @@ class student extends REST_Controller{
         $data = [
             'name' => $this->post('name_student'),
             'id_room' => $this->post('id_class'),
-            'id_period' => $this->post('id_period')
+            'id_period' => $this->post('id_period'),
+			'saldo' => $this->post('init_saldo')
         ];
 
-        if ($this->mStudent->addStudent($data) > 0 ){
+		$this->mStudent->addStudent($data);
+        if ($this->db->affected_rows() > 0 ){
             $this->set_response([
                 'status' => true,
                 'message' => 'success',
-            ], REST_Controller::HTTP_OK);  
+            ], REST_Controller::HTTP_OK);
         }else{
             $this->set_response([
                 'status' => false,
                 'message' => 'failed'
-            ], REST_Controller::HTTP_NOT_FOUND); 
+            ], REST_Controller::HTTP_NOT_FOUND);
         }
     }
 
