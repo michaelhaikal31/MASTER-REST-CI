@@ -20,7 +20,7 @@ use Restserver\Libraries\REST_Controller;
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class kontak extends REST_Controller {
+class Kontak extends REST_Controller {
 
     function __construct()
     {

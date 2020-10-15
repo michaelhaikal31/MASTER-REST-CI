@@ -28,7 +28,6 @@ class Tabungan extends REST_Controller
 		} else {
 			$data = $this->mTabungan->getDataTabungan($id_room, $id_period);
 		}
-
 		if ($data) {
 			$this->response([
 				'status' => true,
@@ -43,15 +42,15 @@ class Tabungan extends REST_Controller
 		}
 	}
 
+
 	public function index_post()
 	{
-		$nominal = $this->post('nominal');
-		$date = $this->post('tanggal');
-		$id_student = $this->post('id_student');
 		$data = [
-			'nominal' => $nominal,
-			'date' => $date,
-			'id_student' => $id_student
+			'nominal' => $this->post('nominal'),
+			'date' => $this->post('tanggal'),
+			'id_student' => $this->post('id_student'),
+			'keterangan' => $this->post('keterangan'),
+			'type' => $this->post('type')
 		];
 
 		$this->mTabungan->addTabungan($data);
@@ -86,6 +85,101 @@ class Tabungan extends REST_Controller
 			$this->response([
 				'status' => false,
 				'message' => 'failed',
+			], REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+
+
+	public function totalTabungan()
+	{
+		$save= $this->inssret([]);
+		$this->updateSaldoStudent(123,321312);
+	}
+
+	public function updateSaldoStudent($student_id, $amount)
+	{
+			$this->db->where('id',$student_id)->update('t_stunt',['amount'=>$amount]);
+	}
+
+	public function datakredit_get(){
+		$id = $this->get('id_student');
+		$data = $this->mTabungan->getDataKredit($id);
+		if ($data) {
+			$this->response([
+				'status' => true,
+				'message' => "Success",
+				'data' => $data
+			], REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => false,
+				'message' => 'No users were found'
+			], REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+	public function datadebet_get(){
+		$id = $this->get('id_student');
+		$data = $this->mTabungan->getDataDebet($id);
+		if ($data) {
+			$this->response([
+				'status' => true,
+				'message' => "Success",
+				'data' => $data
+			], REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => false,
+				'message' => 'No users were found'
+			], REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+	public function datamutasi_get(){
+		$id = $this->get('id_student');
+		$tgl_awal = $this->get('tgl_awal');
+		$tgl_akhir = $this->get('tgl_akhir');
+		$data = $this->mTabungan->getDataMutasi($id, $tgl_awal, $tgl_akhir);
+		if ($data) {
+			$this->response([
+				'status' => true,
+				'message' => "Success",
+				'data' => $data
+			], REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => false,
+				'message' => 'No users were found'
+			], REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+	public function edittabungan_post(){
+		$id_tabungan = $this->post('id_tabungan');
+		$nominal = $this->post('nominal');
+		$keterangan = $this->post('keterangan');
+		$data = $this->mTabungan->editDataTabungan($nominal, $keterangan,$id_tabungan);
+		if ($data > 0) {
+			$this->response([
+				'status' => true,
+				'message' => "Success",
+			], REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => false,
+				'message' => 'No users were found'
+			], REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+	public function deletetabungan_post(){
+		$id_tabungan = $this->post('id_tabungan');
+		$data = $this->mTabungan->deleteDataTabungan($id_tabungan);
+		if ($data > 0) {
+			$this->response([
+				'status' => true,
+				'message' => "Success",
+			], REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => false,
+				'message' => 'No Tabungan were found'
 			], REST_Controller::HTTP_NOT_FOUND);
 		}
 	}

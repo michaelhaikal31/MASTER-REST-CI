@@ -1,6 +1,6 @@
 <?php
 
-class user_model extends CI_Model{
+class User_model extends CI_Model{
 
     public function getUser(){
         return $this->db->get('user')->result_array();
@@ -14,7 +14,7 @@ class user_model extends CI_Model{
     function cekUser($username=null){
         $this->db->select('*');
         $this->db->from('t_user');
-        $this->db->where('t_user.Username',$username);
+        $this->db->where('Username',$username);
         $this->db->limit(1);
         return $this->db->get();
     }

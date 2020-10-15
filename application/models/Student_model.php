@@ -27,6 +27,21 @@ class Student_model extends CI_Model{
             $query = $this->db->get();  
         }
         return $query->result_array();
-        
     }
+	public function getJumlahStudent()
+	{
+		$result = $this->db->select('count(name) as total_student ')->from('t_student')->get()->row();
+		return $result;
+	}
+	public function deleteStudent($id){
+		$sql = "DELETE FROM t_student WHERE id_student = '$id'";
+		$this->db->query($sql);
+		return $this->db->affected_rows();
+	}
+	public function editStudent($data, $id){
+		$sql = "UPDATE t_student SET name = '$data' WHERE id_student = '$id'";
+		$this->db->query($sql);
+		return $this->db->affected_rows();
+	}
+
 }

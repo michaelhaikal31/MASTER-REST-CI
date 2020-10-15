@@ -1,6 +1,6 @@
 <?php
 
-class room_model extends CI_Model{
+class Room_model extends CI_Model{
 
     public function getRoom($id = null){
         if($id===null){
@@ -15,4 +15,10 @@ class room_model extends CI_Model{
         $this->db->insert('t_room', $data);
         return $this->db->affected_rows();
     }
+
+	public function getTotalRoom()
+	{
+		$result = $this->db->select('count(room) as total_room ')->from('t_room')->get()->row();
+		return $result;
+	}
 }

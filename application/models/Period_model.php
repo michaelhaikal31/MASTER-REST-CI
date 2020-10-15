@@ -1,14 +1,11 @@
 <?php
 
-class period_model extends CI_Model{
+class Period_model extends CI_Model{
 
     public function getSchoolYear($id = null){
-
         $this->db->select('t_period.period');
         $this->db->from('t_period');
         $this->db->join('room', 't_period.id_room = room.id', 'left');
-
-
         if($id === null){
             $query = $this->db->get();
         }else{
@@ -16,7 +13,6 @@ class period_model extends CI_Model{
              $query = $this->db->get();
         }
         return $query->result_array();
-        
     }
 
     public function createPeriod($data){
@@ -25,7 +21,6 @@ class period_model extends CI_Model{
     }
 
     public function getPeriod(){
-        // $this->db->select('period,name_room');
        return $this->db->get('get_period')->result_array();
     }
 }

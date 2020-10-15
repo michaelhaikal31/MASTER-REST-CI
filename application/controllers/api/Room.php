@@ -5,10 +5,10 @@ require APPPATH . '/libraries/REST_Controller.php';
 use Restserver\Libraries\REST_Controller;
 
 header("Access-Control-Allow-Origin: *");
-// header("Access-Control-Allow-Credentials: true");
-// header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Access-Control-Allow-Origin");
-// header("Content-Type: application/json; charset=UTF-8");
-// header("Access-Control-Allow-Methods: POST, OPTIONS");
+ header("Access-Control-Allow-Credentials: true");
+ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Access-Control-Allow-Origin");
+ header("Content-Type: application/json; charset=UTF-8");
+ header("Access-Control-Allow-Methods: POST, OPTIONS");
 
 class Room extends REST_Controller{
 

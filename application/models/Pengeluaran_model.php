@@ -30,4 +30,9 @@ class Pengeluaran_model extends CI_Model{
 		$query = $this->db->get();
 		return $query->result_array();
     }
+	public function getTotalPengeluaran($date)
+	{
+		$result = $this->db->select('sum(nominal) as total_pengeluaran')->from('t_pengeluaran')->where('year(date)', $date)->get()->row();
+		return $result;
+	}
 }

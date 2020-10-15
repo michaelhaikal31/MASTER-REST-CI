@@ -5,10 +5,10 @@ require APPPATH . '/libraries/REST_Controller.php';
 use Restserver\Libraries\REST_Controller;
 
 header("Access-Control-Allow-Origin: *");
-// header("Access-Control-Allow-Credentials: true");
-// header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Access-Control-Allow-Origin");
-// header("Content-Type: application/json; charset=UTF-8");
-// header("Access-Control-Allow-Methods: POST, OPTIONS");
+ header("Access-Control-Allow-Credentials: true");
+ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Access-Control-Allow-Origin");
+ header("Content-Type: application/json; charset=UTF-8");
+ header("Access-Control-Allow-Methods: POST, OPTIONS");
 
 class Student extends REST_Controller{
     function __construct(){
@@ -23,7 +23,6 @@ class Student extends REST_Controller{
             'id_period' => $this->post('id_period'),
 			'saldo' => $this->post('init_saldo')
         ];
-
 		$this->mStudent->addStudent($data);
         if ($this->db->affected_rows() > 0 ){
             $this->set_response([
@@ -37,6 +36,35 @@ class Student extends REST_Controller{
             ], REST_Controller::HTTP_NOT_FOUND);
         }
     }
+    public function deleteStudent_post(){
+    	$id = $this->post('id_student');
+		if($this->mStudent->deleteStudent($id) > 0){
+			$this->set_response([
+				'status' => true,
+				'message' => 'success',
+			], REST_Controller::HTTP_OK);
+		}else{
+			$this->set_response([
+				'status' => false,
+				'message' => 'failed'
+			], REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+	public function editStudent_post(){
+		$id = $this->post('id');
+		$name = $this->post('name_student');
+		if($this->mStudent->editStudent($name, $id) > 0){
+			$this->set_response([
+				'status' => true,
+				'message' => "success",
+			], REST_Controller::HTTP_OK);
+		}else{
+			$this->set_response([
+				'status' => false,
+				'message' => 'failed'
+			], REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 
     public function index_get(){
 

@@ -3,10 +3,6 @@
 class Tabungan_model extends CI_Model
 {
 
-	public function addTabungan($data)
-	{
-		$this->db->insert('t_tabungan', $data);
-	}
 
 	public function update_saldo($nominal, $id_student)
 	{
@@ -31,6 +27,78 @@ class Tabungan_model extends CI_Model
 		$this->db->where('t_period.id_period', $id_period);
 		$query = $this->db->get();
 		return $query->result_array();
+	}
+
+	public function getTotalTabungan($date)
+	{
+		$result = $this->db->select('sum(nominal) as total_tabungan ')
+			->from('t_tabungan')
+			->where('year(date)',$date)
+			->get()->row();
+		return $result;
+	}
+
+	public function getTabungan($id_student )
+	{
+		$result = $this->db->select('sum(nominal as value')->from('t_tabungan')->get()->row();
+		return $result->value;
+	}
+
+	public function addTabungan($data)
+	{
+		$this->db->insert('t_tabungan', $data);
+	}
+	public function getDataKredit($id_student){
+		$this->db->select('
+				t_tabungan.id_tabungan,
+				t_tabungan.date,
+				t_tabungan.keterangan,
+				t_tabungan.nominal,
+				t_tabungan.type,');
+		$this->db->from('t_tabungan');
+		$this->db->where('t_tabungan.id_student', $id_student);
+		$this->db->where('t_tabungan.nominal >', 0);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+	public function getDataDebet($id_student){
+		$this->db->select('
+				t_tabungan.id_tabungan,
+				t_tabungan.date,
+				t_tabungan.keterangan,
+				t_tabungan.nominal,
+				t_tabungan.type,'
+			);
+		$this->db->from('t_tabungan');
+		$this->db->where('t_tabungan.id_student', $id_student);
+		$this->db->where('t_tabungan.nominal <', 0);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+	public function getDataMutasi($id_student, $tgl_awal, $tgl_akhir){
+		$sql = "SELECT
+				t_tabungan.id_tabungan,
+				t_tabungan.nominal,
+				t_tabungan.keterangan,
+				t_tabungan.date,
+				t_tabungan.type
+				FROM
+				t_tabungan
+				WHERE
+				t_tabungan.date BETWEEN '$tgl_awal' AND '$tgl_akhir' AND
+				t_tabungan.id_student = '$id_student'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	public function editDataTabungan($nominal, $keterangan, $id){
+		$sql = "UPDATE t_tabungan SET nominal='$nominal', keterangan='$keterangan' WHERE id_tabungan='$id'";
+		$this->db->query($sql);
+		return $this->db->affected_rows();
+	}
+	public function deleteDataTabungan($id){
+		$sql = "DELETE FROM t_tabungan WHERE id_tabungan = '$id'";
+		$this->db->query($sql);
+		return $this->db->affected_rows();
 	}
 
 
